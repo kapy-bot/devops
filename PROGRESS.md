@@ -1,15 +1,12 @@
 # Progress Log
 
-A running record of what's been built and *why*, phase by phase. Meant to be
-skimmable before an interview — each decision below is something you should
-be able to explain out loud.
+A running record of what's been built and *why*, phase by phase.
 
 ## Phase 1: Containerization (done)
 
 ### The app
-A minimal To-Do REST API (FastAPI + SQLAlchemy + Postgres) with a React
-(Vite) frontend. Deliberately simple — the point of this project is the
-DevOps tooling around it, not the app itself.
+A To-Do REST API (FastAPI + SQLAlchemy + Postgres) with a React (Vite)
+frontend.
 
 ### Repo structure
 `backend/` and `frontend/` are siblings, not nested — each gets its own

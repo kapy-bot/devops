@@ -1,9 +1,9 @@
-# Todo App — DevOps Learning Project
+# Todo App
 
-A small To-Do app (FastAPI + Postgres + React) used as a vehicle to practice
-the DevOps toolchain: Docker, GitHub Actions, Terraform, Kubernetes/Helm on
-Azure (ACR/AKS). See [PROGRESS.md](./PROGRESS.md) for a phase-by-phase log of
-decisions and why they were made.
+A To-Do app (FastAPI + Postgres + React), containerized with Docker and
+deployed to Azure (ACR/AKS) via Terraform, GitHub Actions, and Kubernetes/Helm.
+See [PROGRESS.md](./PROGRESS.md) for a log of infrastructure decisions and why
+they were made.
 
 ## Run locally
 

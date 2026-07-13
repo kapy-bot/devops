@@ -21,8 +21,8 @@ app.add_middleware(
 
 @app.on_event("startup")
 def on_startup() -> None:
-    # create_all is fine for a learning project; a real app would use
-    # Alembic migrations so schema changes are versioned and reviewable.
+    # create_all covers the current single-table schema; once schema changes
+    # need to be versioned and reviewable, switch to Alembic migrations.
     Base.metadata.create_all(bind=engine)
 
 
