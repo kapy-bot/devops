@@ -32,3 +32,8 @@ def update_todo(
 def delete_todo(db: Session, db_todo: models.Todo) -> None:
     db.delete(db_todo)
     db.commit()
+
+
+def delete_completed_todos(db: Session) -> None:
+    db.query(models.Todo).filter(models.Todo.completed.is_(True)).delete()
+    db.commit()

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { createTodo, deleteTodo, listTodos, updateTodo } from "./api";
+import { clearCompleted, createTodo, deleteTodo, listTodos, updateTodo } from "./api";
 
 export default function App() {
   const [todos, setTodos] = useState([]);
@@ -31,6 +31,13 @@ export default function App() {
     refresh();
   };
 
+  const handleClearCompleted = async () => {
+    await clearCompleted();
+    refresh();
+  };
+
+  const hasCompleted = todos.some((todo) => todo.completed);
+
   return (
     <main style={{ maxWidth: 480, margin: "2rem auto", fontFamily: "sans-serif" }}>
       <h1>Todo</h1>
@@ -59,6 +66,9 @@ export default function App() {
           </li>
         ))}
       </ul>
+      {hasCompleted && (
+        <button onClick={handleClearCompleted}>Clear completed</button>
+      )}
     </main>
   );
 }

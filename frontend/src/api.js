@@ -22,3 +22,6 @@ export const updateTodo = (id, changes) =>
 
 export const deleteTodo = (id) =>
   request(`/todos/${id}`, { method: "DELETE" });
+
+export const clearCompleted = () =>
+  request("/todos/completed", { method: "DELETE" });

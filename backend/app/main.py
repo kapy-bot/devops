@@ -55,6 +55,16 @@ def update_todo(
     return crud.update_todo(db, db_todo, changes)
 
 
+@app.delete("/todos/completed", status_code=204)
+def delete_completed_todos(db: Session = Depends(get_db)):
+    # Must be declared before /todos/{todo_id} below -- FastAPI/Starlette
+    # matches routes in registration order, and {todo_id} (a plain path
+    # param with no type constraint in the path string itself) would
+    # otherwise swallow this request first and fail trying to parse
+    # "completed" as an int.
+    crud.delete_completed_todos(db)
+
+
 @app.delete("/todos/{todo_id}", status_code=204)
 def delete_todo(todo_id: int, db: Session = Depends(get_db)):
     db_todo = crud.get_todo(db, todo_id)
