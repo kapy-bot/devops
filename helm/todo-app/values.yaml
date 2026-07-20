@@ -1,0 +1,30 @@
+backend:
+  image:
+    repository: todoapph98su6.azurecr.io/todo-backend
+    tag: v1
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+frontend:
+  image:
+    repository: todoapph98su6.azurecr.io/todo-frontend
+    tag: v1
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 150m
+      memory: 128Mi
+
+postgres:
+  image: postgres:16-alpine
+  existingSecret: postgres-credentials
+  storage: 1Gi
