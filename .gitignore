@@ -14,3 +14,5 @@ frontend/dist/
 # editors / os
 .vscode/
 .DS_Store
+
+PROGRESS.md

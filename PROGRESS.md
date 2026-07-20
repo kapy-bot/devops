@@ -61,8 +61,44 @@ phases add files, not new top-level structure.
   `.env.example` documents which variables are required without leaking
   actual credentials into git history.
 
+## Phase 2: CI (GitHub Actions) (done)
+
+### Local testing before CI
+- Backend was smoke-tested locally (uvicorn + SQLite) before touching Docker,
+  to isolate app-logic bugs from container/environment issues. `DATABASE_URL`
+  is read from the environment in `database.py`, so pointing it at
+  `sqlite:///./todo.db` for a local run needed no code changes — just an env
+  var override for that terminal session.
+- `psycopg2-binary` was originally pinned to `2.9.9`, which has no wheel for
+  Python 3.13 on Windows — installing it locally tried to compile from
+  source and failed without a C++ compiler present. Bumped to `2.9.12`,
+  which ships a `cp313-win_amd64` wheel. This only affected local dev (the
+  Docker image uses `python:3.12-slim`, which already had wheels at 2.9.9),
+  but the newer pin is used everywhere for consistency.
+
+### CI workflow (`.github/workflows/ci.yml`) — key decisions
+- **Triggers on `push` and `pull_request` to `main`** — catches breakage
+  before a merge, not after.
+- **Two parallel jobs (`backend`, `frontend`)** instead of one linear job —
+  mirrors the fact that these are independently built/deployed services; a
+  failure in one job shows clearly which side broke, without blocking the
+  other from reporting its own result.
+- **Runtime versions pinned to match the Dockerfiles**: `python-version:
+  "3.12"` and `node-version: "20"`. Same reasoning as the local testing
+  note above — CI should validate against the same runtime that actually
+  ships, not whatever happens to be newest on the runner.
+- **Lint-only for the backend (`ruff`)** — there are no backend tests yet;
+  linting is a fast, useful signal on its own, and this is the natural spot
+  to add `pytest` later. `ruff` is installed as a CI-only step and
+  deliberately left out of `requirements.txt`, since it's a dev tool the
+  running app never needs.
+- **`docker build` for both services, but no push to a registry** — this
+  validates that both Dockerfiles actually build (catches a broken `COPY`,
+  a missing file, a bad base image, immediately) without needing a
+  registry, since ACR doesn't exist yet. Pushing images gets added once
+  Terraform provisions ACR.
+
 ### Deliberately deferred (not built yet)
-- CI (`.github/workflows/`) — Phase 2.
 - Terraform for ACR/AKS provisioning — Phase 3.
 - CD, K8s manifests/Helm — Phase 4.
 - Observability, security hardening (image scanning, secrets management,
