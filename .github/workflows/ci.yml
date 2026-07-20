@@ -25,7 +25,7 @@ jobs:
       - name: Build Docker image
         run: docker build -t todo-backend:ci ./backend
       - name: Scan image for vulnerabilities
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: todo-backend:ci
           severity: HIGH,CRITICAL
@@ -48,7 +48,7 @@ jobs:
        - name: Build Docker image
          run: docker build -t todo-frontend:ci ./frontend
        - name: Scan image for vulnerabilities
-         uses: aquasecurity/trivy-action@0.24.0
+         uses: aquasecurity/trivy-action@v0.36.0
          with:
            image-ref: todo-frontend:ci
            severity: HIGH,CRITICAL
