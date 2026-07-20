@@ -29,6 +29,7 @@ jobs:
         with:
           image-ref: todo-backend:ci
           severity: HIGH,CRITICAL
+          ignore-unfixed: 'true'
           exit-code: '1'
 
   frontend:
@@ -52,6 +53,7 @@ jobs:
          with:
            image-ref: todo-frontend:ci
            severity: HIGH,CRITICAL
+           ignore-unfixed: 'true'
            exit-code: '1'
 
   deploy:

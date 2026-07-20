@@ -17,6 +17,12 @@ RUN npm run build
 # rootless. This variant already runs as a non-root user on port 8080.
 FROM nginxinc/nginx-unprivileged:1.27-alpine
 
+# The base image's OS packages (openssl, zlib, libxml2, etc.) are only as
+# current as whatever snapshot was last published upstream. Upgrading here
+# pulls in security patches Alpine has released since then, independent of
+# how stale that snapshot is.
+RUN apk update && apk upgrade --no-cache
+
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
